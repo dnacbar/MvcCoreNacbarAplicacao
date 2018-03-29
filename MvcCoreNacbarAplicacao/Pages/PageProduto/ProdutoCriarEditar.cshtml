@@ -1,0 +1,219 @@
+﻿@page
+@model ProdutoCriarEditarModel
+@{
+    ViewData["Title"] = "NSAPP";
+}
+
+<h2>PRODUTO</h2>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="Produto.IdEmpresa" type="hidden" />
+    <input asp-for="Produto.IdProduto" type="hidden" />
+    <input asp-for="Produto.NmEstoque" type="hidden" />
+    <input asp-for="Produto.NmMinimo" type="hidden" />
+    <hr />
+    <div class="row">
+        <div class="form-group col-md-6 col-md-offset-3 text-center">
+            <label asp-for="Produto.DsEan" class="control-label">CÓD. BARRAS - EAN</label>
+            <input asp-for="Produto.DsEan" class="form-control" id="txtEan" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Produto.DsNomeproduto" class="control-label">NOME PRODUTO</label>
+            <input asp-for="Produto.DsNomeproduto" class="form-control" id="txtNomeproduto" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Produto.DsDesctecnica" class="control-label">DESCRIÇÃO PRODUTO</label>
+            <input asp-for="Produto.DsDesctecnica" class="form-control" id="txtDesctecnica" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="Produto.NmValorcompra" class="control-label">VALOR COMPRA R$:</label>
+            <input asp-for="Produto.NmValorcompra" type="number" min="0" step="0.1" class="form-control" id="txtValorcompra" autocomplete="off" />
+        </div>
+        <label class="control-label col-md-2" style="margin-top:23px">
+            <input type="checkbox" id="ckbPorcentagem" />% PORC.?
+        </label>
+        <div class="form-group col-md-2">
+            <label class="control-label">VALOR ADICIONAL</label>
+            <input type="number" min="0" step="0.01" value="0" class="form-control" id="txtAdicional" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="Produto.NmValorvenda" class="control-label">VALOR VENDA R$:</label>
+            <input asp-for="Produto.NmValorvenda" type="number" min="0" class="form-control" id="txtValorvenda" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="Produto.NmQtderelativa" class="control-label">QTDE. PRODUTO</label>
+            <input asp-for="Produto.NmQtderelativa" type="number" min="0" step="1" class="form-control" id="txtQtderelativa" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-1">
+            <label class="control-label">UNIDADE</label>
+            <select asp-for="Produto.IdUnidade" class="form-control" asp-items="@(new SelectList(Model.LstUnidade, "IdUnidade", "DsUnidade" ))" id="cmbUnidade">
+                <option value="">Unidade...</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label asp-for="Produto.NmUnidade" class="control-label">VALOR FRACIONADO</label>
+            <input asp-for="Produto.NmUnidade" type="number" min="0" step="1" class="form-control" id="txtQtdeunidade" disabled autocomplete="off" />
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="Produto.NmQtdeabsoluta" class="control-label">QTDE. TOTAL</label>
+            <input asp-for="Produto.NmQtdeabsoluta" type="number" min="0" class="form-control" id="txtQtdeabsoluta" disabled autocomplete="off" />
+        </div>
+        <div class="form-group col-md-2">
+            <label class="control-label">TAMANHO</label>
+            <select class="form-control" asp-items="@(new SelectList(Model.LstTamanho, "IdTamanho", "DsTamanho" ))" id="cmbTamanho">
+                <option value="">Tamanho...</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label class="control-label">MARCA</label>
+            <select asp-for="Produto.IdMarca" class="form-control" asp-items="@(new SelectList(Model.LstMarca, "IdMarca", "DsMarca" ))" id="cmbMarca">
+                <option value="">Marca...</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label class="control-label">COR</label>
+            <select asp-for="Produto.IdCor" class="form-control" asp-items="@(new SelectList(Model.LstCor, "IdCor", "DsCor" ))" id="cmbCor">
+                <option value="">Cor...</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label class="control-label">TIPO PRODUTO</label>
+            <select asp-for="Produto.IdTipoproduto" class="form-control" asp-items="@(new SelectList(Model.LstTipoProduto, "IdTipoproduto", "DsTipoproduto" ))" id="cmbTipoproduto">
+                <option value="">Tipo Produto...</option>
+            </select>
+        </div>
+        <div class="form-group col-md-12">
+            <label asp-for="Produto.DsObservacao" class="control-label">OBSERVAÇÃO</label>
+            <textarea asp-for="Produto.DsObservacao" style="resize: none" class="form-control" rows="5" id="txtObservacao" autocomplete="off"></textarea>
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary" id="btnSalvar">SALVAR</button>
+        <a href="/PageProduto/ProdutoLeitura" class="btn btn-primary" id="btnVoltar">VOLTAR</a>
+    </div>
+</form>
+<div class="modal"></div>
+
+<style type="text/css">
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 255, 255, 255, .8 ) 50% 50% no-repeat;
+    }
+
+    /* enquanto estiver carregando, o scroll da página estará desativado */
+    body.loading {
+        overflow: hidden;
+    }
+
+        /* a partir do momento em que o body estiver com a classe loading,  o modal aparecerá */
+        body.loading .modal {
+            display: block;
+        }
+</style>
+
+<script type="text/javascript" src="~/JSFuncoes.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if (@ViewData["Edit"] !== 0) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetProdutosAsync", "Funcao")',
+                data: { intCodigoProduto: @ViewData["Edit"] },
+                success: function (val) {
+                    console.log(val);
+                    $('#txtEan').val(val.dsEan);
+                    $('#txtNomeproduto').val(val.dsNomeproduto);
+                    $('#txtDesctecnica').val(val.dsDesctecnica);
+                    $('#txtValorcompra').val(val.nmValorcompra);
+                    $('#txtValorvenda').val(val.nmValorvenda);
+                    $('#txtQtderelativa').val(val.nmQtderelativa);
+                    $('#txtQtdeabsoluta').val(val.nmQtdeabsoluta);
+                    $('#txtQtdeunidade').val(val.nmUnidade);
+                    $('#cmbUnidade').val(val.idUnidade);
+                    $('#cmbMarca').val(val.idMarca);
+                    $('#cmbProduto').val(val.idProduto);
+                    $('#cmbCor').val(val.idCor);
+                    $('#cmbTamanho').val(val.idTamanho);
+                    $('#cmbTipoproduto').val(val.idTipoproduto);
+                },
+                error: function () {
+
+                },
+            });
+        }
+
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                if ($('#btnSalvar, #btnVoltar').is(':focus')) {
+                    return true;
+                }
+                else {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+    });
+
+    $('#txtAdicional, #txtValorcompra, #ckbPorcentagem').on('change keyup paste mouseup', function () {
+        if ($('#ckbPorcentagem').is(':checked')) {
+            var intVi = ($('#txtValorcompra').val() * $('#txtAdicional').val()) / 100, intVf = $('#txtValorcompra').val();
+            intVf = (parseFloat(intVf) + parseFloat(intVi)).toFixed(2);
+            $('#txtValorvenda').val(intVf);
+        }
+        else {
+            var intV = parseFloat(Number($('#txtValorcompra').val()) + Number($('#txtAdicional').val())).toFixed(2);
+            $('#txtValorvenda').val(intV);
+        }
+    });
+
+    $('#cmbUnidade').change(function () {
+        if ($(this).val() === "") {
+            $('#txtQtdeunidade').attr('disabled', true);
+        }
+        else {
+            $('#txtQtdeunidade').attr('disabled', false);
+        }
+    });
+
+    $('#txtQtderelativa, #txtQtdeunidade').change(function () {
+        if ($('#txtQtdeunidade').is(':disabled')) {
+            $('#txtQtdeabsoluta').val(parseFloat($('#txtQtderelativa').val()).toFixed(2));
+        }
+        else {
+            $('#txtQtdeabsoluta').val(parseFloat($('#txtQtderelativa').val() * $('#txtQtdeunidade').val()).toFixed(2));
+        }
+    });
+
+    $('#txtQtderelativa').keypress(function (e) {
+        return e.charCode >= 48 && e.charCode <= 57;
+    });
+
+//$('#fileProduto').change(function(){
+//    var oFReader = new FileReader();
+//    oFReader.readAsDataURL($(this)[0].files[0]);
+//
+//    oFReader.onload = function (oFREvent) {
+//        $('#imgProduto').attr('src', oFREvent.target.result);
+//    };
+//
+//    //<label class="btn btn-primary btn-file" style="top:15px; width: 100px;">
+//    //        Browse <input type="file" style="display: none;" id="fileProduto" accept="image/*" />
+//    //</label>
+//    //<img class="img-thumbnail img-responsive-inline" style="width: 300px; height:50px;" id="imgProduto" />
+//    //var oFReader = new FileReader();
+//    //oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+//    //
+//    //oFReader.onload = function (oFREvent) {
+//    //document.getElementById("uploadPreview").src = oFREvent.target.result;
+//    //};
+//});
+</script>

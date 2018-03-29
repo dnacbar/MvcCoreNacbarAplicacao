@@ -1,0 +1,57 @@
+﻿@page
+@model BasicoExcluirModel
+@{
+    if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.BAIRRO)
+    {
+        ViewData["Basico"] = "BAIRRO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.COR)
+    {
+        ViewData["Basico"] = "COR";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.FORMAPAGAMENTO)
+    {
+        ViewData["Basico"] = "FORMA PAGAMENTO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MARCA)
+    {
+        ViewData["Basico"] = "MARCA";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MOTIVOBLOQUEIO)
+    {
+        ViewData["Basico"] = "MOTIVO BLOQUEIO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.SERVICO)
+    {
+        ViewData["Basico"] = "SERVIÇO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TAMANHO)
+    {
+        ViewData["Basico"] = "TAMANHO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPESSOA)
+    {
+        ViewData["Basico"] = "TIPO PESSOA";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPRODUTO)
+    {
+        ViewData["Basico"] = "TIPO PRODUTO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.UNIDADE)
+    {
+        ViewData["Basico"] = "UNIDADE";
+    }
+    
+    ViewData["Title"] = "NsApp";
+}
+
+<h2>DESEJA EXCLUIR @ViewData["Basico"] @Model.StrDescricao.ToUpper()?</h2>
+<form method="post">
+    <button type="submit" asp-route-id="@Model.IntId" class="btn btn-primary">EXCLUIR</button>
+    <a href="/PageBasico/BasicoLeitura?EnumBasico=@ViewData["Basico"].ToString()" class="btn btn-primary">RETORNAR</a>
+</form>
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,193 @@
+﻿@page
+@model AgendaCriarModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "NsApp";
+}
+
+<h4>CRIAR AGENDA</h4>
+
+<form method="post" class="form-inline">
+    <div class="form-group">
+        <label>
+            CLIENTE:
+            <select asp-items="@(new SelectList(Model.LstCliente, "IdPessoa", "DsNomepessoa"))" autofocus class="form-control" id="cmbCliente">
+                <option value="" selected="selected">CLIENTE...</option>
+            </select>
+        </label>
+        <label>
+            DATA:
+            <input id="dtAgendamento" type="date" class="form-control" autocomplete="off">
+        </label>
+        <label>
+            HORÁRIO:
+            <input id="hrAgendamento" type="time" class="form-control" autocomplete="off">
+        </label>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <button class="btn btn-create col-md-offset-1" id="btnAdicionarServico" type="button">ADICIONAR SERVIÇO</button>
+    <button class="btn btn-danger" id="btnRemoverServico" type="button">REMOVER SERVIÇO</button>
+
+    <button class="btn btn-create col-md-offset-3" id="btnAdicionarProduto" type="button">ADICIONAR PRODUTO</button>
+    <button class="btn btn-danger" id="btnRemoverProduto" type="button">REMOVER PRODUTO</button>
+    <hr/>
+    <div class="modal-body row">
+        <div class="col-md-6" id="hr1"></div>
+        <div class="col-md-6" id="hr2"></div>
+    </div>
+    <hr />
+    <div class="form-group bottom">
+        <button type="button" class="btn btn-primary" id="btnSalvar">SALVAR</button>
+        <button type="button" class="btn btn-primary">SAIR</button>
+    </div>
+</form>
+
+<script type="text/javascript" src="~/JSFuncoes.js"></script>
+<script type="text/javascript">
+    var Produto = [], intValor = 0;
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetProdutoAsync", "Funcao")',
+            success: function (resp) {
+                Produto = resp;
+            },
+            error: function (jqXHR, exception) {
+                ajaxError(jqXHR, exception);
+            },
+        });
+
+        var now = new Date();
+
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+        var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+        $('#dtAgendamento').attr('min', today);
+        $('#dtAgendamento').val(today);
+    });
+
+    $('#btnAdicionarServico').click(function () {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetProfissionalAsync", "Funcao")',
+            success: function (response) {
+                //console.log(response);
+                $('form #hr1').prepend(
+                    '<div id="divAgenda">' +
+                    '<label>SERVIÇO: ' +
+                    '<select class="form-control" id="cmbServico">' +
+                    '    <option value="" selected="selected">Serviço...</option>' +
+                    '</select></label> ' +
+                    '</div>');
+
+                $.each(response, function (i, p) {
+                    $('#cmbServico').append($('<option data-value={"profissional":' + p.idProfissional + ',"profissao":' + p.idProfissao + ',"servico":' + p.idServico + ',"valor":' + p.idServicoNavigation.nmValor + '}></option > ').text(p.id.dsNomepessoa.toUpperCase()));
+                });
+
+                $('#cmbServico').change(function () {
+                    intValor = 0;
+                    $('form #cmbServico').each(function (i, p) {
+                        intValor = intValor + ($(p).val() ? $(p).find(':selected').data('value').valor : 0);
+                    });
+                    $('#lblValor').html(intValor);
+                });
+            },
+        });
+    });
+
+    $('#btnAdicionarProduto').click(function () {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetProdutoAsync", "Funcao")',
+            success: function (response) {
+                //console.log(response);
+                $('form #hr2').prepend(
+                    '<div id="divAgenda">' +
+                    '<label>PRODUTO: ' +
+                    '<select class="form-control" id="cmbProduto">' +
+                    '    <option value="" selected="selected">Produto...</option>' +
+                    '</select>' +
+                    'Quantidade <input id="nmQuantidade" type="number" class="form-control" min="0" value="0" max="0"/></label> ' +
+                    '</div>');
+
+                $.each(response, function (i, p) {
+                    $('#cmbProduto').append($('<option value="' + p.idProduto + '" data-max="' + p.nmQtdeabsoluta + '"></option>').text(p.dsNomeproduto.toUpperCase()));
+                });
+
+                $('#cmbProduto').change(function () {
+                    $(this).parent().find('#nmQuantidade').attr('max', $(this).parent().find(':selected').data('max'));
+                });
+            },
+        });
+    });
+
+    $('#btnRemoverServico').click(function () {
+        $('form #divAgenda').first().remove();
+    });
+
+    $('#btnRemoverProduto').click(function () {
+        $('form #divAgenda').first().remove();
+    });
+
+
+    $('#btnSalvar').click(function () {
+        //if ($('form #divAgenda').length == 0) {
+        //    $('.validation-summary-valid ul').empty().append('<li>Adicione um Serviço</li>');
+        //    return;
+        //}
+
+        var Agenda = "", AgendaServico = [], AgendaServicoProduto = [];
+        var itemAgenda = {}, itemServico = {}, itemProduto = {};
+
+        itemAgenda['IdEmpresa'] = @NacbarAplicacao.IntIdEmpresa ;
+        itemAgenda['IdAgenda'] = @ViewData["IdAgenda"];
+        itemAgenda['IdCliente'] = $('#cmbCliente').val();
+        itemAgenda['DtAgendamento'] = $('#dtAgendamento').val();
+        itemAgenda['HrAgendamento'] = $('#hrAgendamento').val();
+
+        Agenda = itemAgenda;
+
+        //alert(JSON.stringify(Agenda));
+        //return;
+        $('form #divAgenda').each(function (i, p) {
+
+            itemServico['IdEmpresa'] = @NacbarAplicacao.IntIdEmpresa;
+            itemServico['IdAgenda'] = @ViewData["IdAgenda"];
+            itemServico['IdAgendaServico'] = i + 1;
+            itemServico['IdProfissional'] = $(p).find('#cmbServico').find(':selected').data('value').profissional;
+            itemServico['IdProfissao'] = $(p).find('#cmbServico').find(':selected').data('value').profissao;
+            itemServico['IdServico'] = $(p).find('#cmbServico').find(':selected').data('value').servico;
+
+            AgendaServico.push(itemServico);
+
+            $(p).find('#divProduto').each(function (ii, pp) {
+
+                itemProduto['IdEmpresa'] = @NacbarAplicacao.IntIdEmpresa;
+                itemProduto['IdAgenda'] = @ViewData["IdAgenda"];
+                itemProduto['IdAgendaServico'] = i + 1;
+                itemProduto['IdAgendaServicoProduto'] = ii + 1;
+                itemProduto['IdProduto'] = $(pp).find('#cmbProduto').val();
+                itemProduto['NmQuantidade'] = $(pp).find('#nmQuantidade').val();
+
+                AgendaServicoProduto.push(itemProduto);
+                itemProduto = {};
+            });
+            itemServico = {};
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("PostAgendaAsync", "Funcao")',
+            data: { Agenda: Agenda, LstAgendaServico: AgendaServico, LstAgendaServicoProduto: AgendaServicoProduto },
+            success: function () {
+                $('form').submit();
+            },
+            error: function (jqXHR, exception) {
+                ajaxError(jqXHR, exception);
+            },
+        });
+    });
+</script>

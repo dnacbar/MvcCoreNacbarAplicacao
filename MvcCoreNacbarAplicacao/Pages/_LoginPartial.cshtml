@@ -1,0 +1,111 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using MvcCoreNacbarAplicacao.DBNacbarEF
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">PESSOA<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("FÍSICA", "PessoaLeitura", "PagePessoa", new { EnumPessoa = PessoaLeituraModel.enumPessoa.FISICA }, null)</li>
+                <li>@Html.ActionLink("JURÍDICA", "PessoaLeitura", "PagePessoa", new { EnumPessoa = PessoaLeituraModel.enumPessoa.JURIDICA }, null)</li>
+            </ul>
+        </li>
+        <li>
+            <a href="/PageProduto/ProdutoLeitura">PRODUTO</a>
+        </li>
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">SERVIÇO<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("AGENDA", "AgendaLeitura", "PageAgenda")</li>
+                <li>@Html.ActionLink("HORÁRIO", "HorarioLeitura", "PageHorario")</li>
+                <li>@Html.ActionLink("VENDA", "", "")</li>
+            </ul>
+        </li>
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">CADASTRO BÁSICO<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("BAIRRO", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.BAIRRO }, null)</li>
+                <li>@Html.ActionLink("COR", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.COR }, null)</li>
+                <li>@Html.ActionLink("ESTADO CIVIL", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.ESTADOCIVIL }, null)</li>
+                <li>@Html.ActionLink("FORMA PAGAMENTO", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.FORMAPAGAMENTO }, null)</li>
+                <li>@Html.ActionLink("MARCA", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.MARCA }, null)</li>
+                <li>@Html.ActionLink("MOTIVO BLOQUEIO", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.MOTIVOBLOQUEIO }, null)</li>
+                <li>@Html.ActionLink("SERVIÇO", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.SERVICO }, null)</li>
+                <li>@Html.ActionLink("TAMANHO", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.TAMANHO }, null)</li>
+                <li>@Html.ActionLink("TIPO PESSOA", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.TIPOPESSOA }, null)</li>
+                <li>@Html.ActionLink("TIPO PRODUTO", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.TIPOPRODUTO }, null)</li>
+                <li>@Html.ActionLink("UNIDADE", "BasicoLeitura", "PageBasico", new { EnumBasico = BasicoLeituraModel.enumBasico.UNIDADE }, null)</li>
+                <li>@Html.ActionLink("MUNICÍPIO", "UFLeitura", "PageUF")</li>
+            </ul>
+        </li>
+    </ul>
+    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li> <a asp-page="/Account/Manage/Index" title="Manage">BEM VINDO @UserManager.GetUserName(User).ToUpper()!</a> </li>
+            <li> <a asp-page="/Account/Register">REGISTRAR</a> </li>
+            <li> <button type="submit" class="btn btn-danger navbar-btn">SAIR</button> </li>
+        </ul>
+    </form>
+}
+
+<style type="text/css">
+    .dropdown-submenu {
+        position: relative;
+    }
+
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -6px;
+            margin-left: -1px;
+            -webkit-border-radius: 0 6px 6px 6px;
+            -moz-border-radius: 0 6px 6px;
+            border-radius: 0 6px 6px 6px;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu > a:after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #ccc;
+            margin-top: 5px;
+            margin-right: -10px;
+        }
+
+        .dropdown-submenu:hover > a:after {
+            border-left-color: #fff;
+        }
+
+        .dropdown-submenu.pull-left {
+            float: none;
+        }
+
+            .dropdown-submenu.pull-left > .dropdown-menu {
+                left: -100%;
+                margin-left: 10px;
+                -webkit-border-radius: 6px 0 6px 6px;
+                -moz-border-radius: 6px 0 6px 6px;
+                border-radius: 6px 0 6px 6px;
+            }
+</style>
+
+@*<li class="dropdown-submenu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">UF</a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("PAÍS", "UFLeitura", "PageUF", new { EnumUf = UFLeituraModel.enumUF.PAIS }, null)</li>
+            <li>@Html.ActionLink("ESTADO", "UFLeitura", "PageUF", new { EnumUf = UFLeituraModel.enumUF.ESTADO }, null)</li>
+            <li>@Html.ActionLink("MUNICÍPIO", "UFLeitura", "PageUF", new { EnumUf = UFLeituraModel.enumUF.MUNICIPIO }, null)</li>
+        </ul>
+    </li>*@

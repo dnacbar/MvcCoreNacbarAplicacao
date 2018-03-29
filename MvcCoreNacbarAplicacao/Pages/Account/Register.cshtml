@@ -1,0 +1,125 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "REGISTRAR USUÁRIO";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row col-md-4">
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <h4>Criar um novo Usuário</h4>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Input.UserName"></label>
+            <input asp-for="Input.UserName" class="form-control" autocomplete="off" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.ConfirmPassword"></label>
+            <input asp-for="Input.ConfirmPassword" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary center-block">REGISTRAR</button>
+    </form>
+</div>
+<div class="modal"></div>
+
+<style type="text/css">
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 255, 255, 255, .8 ) 50% 50% no-repeat;
+    }
+
+    /* enquanto estiver carregando, o scroll da página estará desativado */
+    body.loading {
+        overflow: hidden;
+    }
+
+        /* a partir do momento em que o body estiver com a classe loading,  o modal aparecerá */
+        body.loading .modal {
+            display: block;
+        }
+</style>
+
+<script type="text/javascript" src="~/lib/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+<script type="text/javascript" src="~/JSFuncoes.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13 && !$('#btnSalvar').is(':focus')) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+
+    $('#txtTelefone').focusout(function () {
+        $(this).val(FormataTelefone($(this).val()));
+    });
+
+    $('#btnPesquisaCnpj').click(function () {
+        $body = $("body");
+        $body.addClass("loading");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetCnpjAsync", "Funcao")',
+            data: { strCnpj: $('#txtFederal').val() },
+            success: function (val) {
+                console.log(val);
+                $('input[id=txtNomeempresa]').val(val.nome);
+                $('input[id=txtNomefantasia]').val(val.fantasia);
+                $('input[id=txtCep]').val(val.cep);
+                $('input[id=txtEmail]').val(val.email);
+                $('input[id=txtLogradouro]').val(val.logradouro);
+                $('input[id=txtComplemento]').val(val.complemento);
+                $('input[id=txtTelefone]').val(val.telefone);
+                $('input[id=txtNumero]').val(val.numero);
+                $('select[id=cmbMunicipio]').val(val.idMunicipio);
+                $('select[id=cmbBairro]').val(val.idBairro);
+                $body.removeClass("loading");
+            },
+            error: function ()
+            { $body.removeClass("loading"); }
+        });
+    })
+
+    $('#btnPesquisaCnpj').focusin(function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                GetEmpresaAsync();
+            }
+        });
+    });
+
+    $('#ckbFisica').click(function () {
+        if ($('#ckbFisica').is(':checked')) {
+            $('#txtNomefantasia').prop('disabled', true);
+            $('#txtEstadual').prop('disabled', true);
+            $('#txtMunicipal').prop('disabled', true);
+            $('#btnPesquisaCnpj').prop('disabled', true);
+            $('#txtFederal').prop('maxlength', 11);
+        }
+        else {
+            $('#txtNomefantasia').prop('disabled', false);
+            $('#txtEstadual').prop('disabled', false);
+            $('#txtMunicipal').prop('disabled', false);
+            $('#btnPesquisaCnpj').prop('disabled', false);
+            $('#txtFederal').prop('maxlength', 14);
+        }
+    });
+</script>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

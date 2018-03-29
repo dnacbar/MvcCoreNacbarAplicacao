@@ -1,0 +1,321 @@
+﻿@page
+@model PessoaCriarEditarModel
+@{
+    if (PessoaLeituraModel.EnumPessoa == PessoaLeituraModel.enumPessoa.FISICA)
+    {
+        ViewData["Pessoa"] = "PESSOA FÍSICA";
+    }
+    else if (PessoaLeituraModel.EnumPessoa == PessoaLeituraModel.enumPessoa.JURIDICA)
+    {
+        ViewData["Pessoa"] = "PESSOA JURÍDICA";
+    }
+    ViewData["Title"] = "NSAPP" + ViewData["Pessoa"];
+}
+
+<h2>@ViewData["Pessoa"]</h2>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="Pessoa.IdEmpresa" type="hidden" />
+    <input asp-for="Pessoa.IdPessoa" type="hidden" />
+    <input asp-for="Pessoa.DtCadastro" type="hidden" />
+    <input asp-for="Pessoa.BoTipopessoa" type="hidden" />
+    <hr />
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label asp-for="Pessoa.DsNomepessoa" class="control-label">NOME PESSOA</label>
+            <input asp-for="Pessoa.DsNomepessoa" class="form-control" id="txtNomepessoa" autocomplete="off" />
+        </div>
+        @if (PessoaLeituraModel.EnumPessoa == PessoaLeituraModel.enumPessoa.JURIDICA)
+        {
+            <div class="form-group col-md-6">
+                <label asp-for="Pessoa.DsNomefantasia" class="control-label">NOME FANTASIA</label>
+                <input asp-for="Pessoa.DsNomefantasia" class="form-control" id="txtNomefantasia" autocomplete="off" />
+            </div>
+            @*LINHA*@
+            <div class="form-group col-md-4">
+                <label asp-for="Pessoa.DsInscricaofederal" class="control-label">CNPJ</label>
+                <input asp-for="Pessoa.DsInscricaofederal" class="form-control" id="txtFederal" autocomplete="off" maxlength="14" />
+            </div>
+            <button type="button" class="btn btn-primary col-md-2" style="margin-top: 28px;" id="btnPesquisaCnpj">PESQUISAR CNPJ</button>
+            <div class="form-group col-md-2">
+                <label asp-for="Pessoa.DsInscricaoestadual" class="control-label">INSC. ESTADUAL</label>
+                <input asp-for="Pessoa.DsInscricaoestadual" class="form-control" id="txtEstadual" autocomplete="off" />
+            </div>
+            <div class="form-group col-md-2">
+                <label asp-for="Pessoa.DsInscricaomunicipal" class="control-label">INSC. MUNICIPAL</label>
+                <input asp-for="Pessoa.DsInscricaomunicipal" class="form-control" id="txtMunicipal" autocomplete="off" />
+            </div>
+            @*LINHA*@
+        }
+        else
+        {
+            @*LINHA*@
+            <div class="form-group col-md-4">
+                <label asp-for="Pessoa.DsInscricaofederal" class="control-label">CPF</label>
+                <input asp-for="Pessoa.DsInscricaofederal" class="form-control" id="txtFederal" autocomplete="off" maxlength="14" />
+            </div>
+        }
+        <div class="form-group col-md-2">
+            <label asp-for="Pessoa.DtNascimento" class="control-label">DATA NASCIMENTO</label>
+            <input asp-for="Pessoa.DtNascimento" type="date" class="form-control" id="dateNascimento" autocomplete="off" />
+        </div>
+        @*LINHA*@
+        @*LINHA*@
+        <div class="form-group col-md-2">
+            <label class="control-label">ESTADO</label>
+            <select class="form-control" asp-items="@(new SelectList(Model.LstEstado, "IdEstado", "DsEstado"))" id="cmbEstado">
+                <option value="">Estado...</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="Pessoa.IdMunicipio" class="control-label">MUNICÍPIO</label>
+            <select asp-for="Pessoa.IdMunicipio" class="form-control" id="cmbMunicipio">
+                <option value="">Município...</option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Pessoa.IdBairro" class="control-label">BAIRRO</label>
+            <select asp-for="Pessoa.IdBairro" class="form-control" asp-items="@(new SelectList(Model.LstBairro, "IdBairro", "DsBairro"))" id="cmbBairro">
+                <option value="">Bairro...</option>
+            </select>
+        </div>
+        @*LINHA*@
+        @*LINHA*@
+        <div class="form-group col-md-1">
+            <label asp-for="Pessoa.DsCep" class="control-label">CEP</label>
+            <input asp-for="Pessoa.DsCep" class="form-control" id="txtCep" autocomplete="off" data-mask="00000-000" />
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="Pessoa.DsLogradouro" class="control-label">LOGRADOURO</label>
+            <input asp-for="Pessoa.DsLogradouro" class="form-control" id="txtLogradouro" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-2">
+            <label asp-for="Pessoa.DsComplemento" class="control-label">COMPLEMENTO</label>
+            <input asp-for="Pessoa.DsComplemento" class="form-control" id="txtComplemento" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-1">
+            <label asp-for="Pessoa.DsNumero" class="control-label">NÚMERO</label>
+            <input asp-for="Pessoa.DsNumero" class="form-control" id="txtNumero" autocomplete="off" maxlength="4" />
+        </div>
+        <div class="form-group col-md-2">
+            <label asp-for="Pessoa.DsTelefone" class="control-label">TELEFONE</label>
+            <input asp-for="Pessoa.DsTelefone" class="form-control" id="txtTelefone" autocomplete="off" maxlength="13" data-mask="(00)0000-0000" />
+        </div>
+        <div class="form-group col-md-2">
+            <label asp-for="Pessoa.DsCelular" class="control-label">CELULAR</label>
+            <input asp-for="Pessoa.DsCelular" class="form-control" id="txtCelular" autocomplete="off" maxlength="14" data-mask="(00)00000-0000" />
+        </div>
+        @*LINHA*@
+        @*LINHA*@
+        <div class="form-group col-md-3">
+            <label asp-for="Pessoa.DsEmail" class="control-label">E-MAIL</label>
+            <input asp-for="Pessoa.DsEmail" class="form-control" id="txtEmail" autocomplete="off" />
+        </div>
+        @if (PessoaLeituraModel.EnumPessoa == PessoaLeituraModel.enumPessoa.FISICA)
+        {
+            <div class="form-group col-md-2">
+                <label asp-for="Pessoa.IdEstadocivil" class="control-label">ESTADO CIVIL</label>
+                <select asp-for="Pessoa.IdEstadocivil" class="form-control" asp-items="@(new SelectList(Model.LstEstadoCivil, "IdEstadoCivil", "DsEstadoCivil"))" id="cmbBairro">
+                    <option value="">Estado Civil...</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="Pessoa.DsResponsavel" class="control-label">RESPONSÁVEL</label>
+                <input asp-for="Pessoa.DsResponsavel" class="form-control" id="txtResponsavel" autocomplete="off" disabled />
+            </div>
+            <div class="form-group col-md-2">
+                <label asp-for="Pessoa.DsTelefoneresponsavel" class="control-label">TEL. RESPONSÁVEL</label>
+                <input asp-for="Pessoa.DsTelefoneresponsavel" class="form-control" id="txtTelefoneResponsavel" autocomplete="off" disabled maxlength="13" data-mask="(00)0000-0000" />
+            </div>
+            <div class="form-group col-md-2">
+                <label asp-for="Pessoa.DsCelularresponsavel" class="control-label">CEL. RESPONSÁVEL</label>
+                <input asp-for="Pessoa.DsCelularresponsavel" class="form-control" id="txtCelularResponsavel" autocomplete="off" disabled maxlength="14" data-mask="(00)00000-0000" />
+            </div>
+            <div class="form-group col-md-12">
+                <label asp-for="Pessoa.DsObservacao" class="control-label">OBSERVAÇÃO</label>
+                <textarea asp-for="Pessoa.DsObservacao" style="resize: none" class="form-control" rows="5" id="txtObservacao" autocomplete="off"></textarea>
+            </div>
+        }
+        else
+        {
+            <div class="form-group col-md-9">
+                <label asp-for="Pessoa.DsObservacao" class="control-label">OBSERVAÇÃO</label>
+                <textarea asp-for="Pessoa.DsObservacao" class="form-control" rows="5" id="txtObservacao" autocomplete="off"></textarea>
+            </div>
+        }
+        @*LINHA*@
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary" id="btnSalvar">SALVAR</button>
+        <a href="/Produto/ProdutoLeitura" class="btn btn-primary" id="btnVoltar">VOLTAR</a>
+    </div>
+</form>
+<div class="modal"></div>
+
+<style type="text/css">
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 255, 255, 255, .8 ) 50% 50% no-repeat;
+    }
+
+    /* enquanto estiver carregando, o scroll da página estará desativado */
+    body.loading {
+        overflow: hidden;
+    }
+
+        /* a partir do momento em que o body estiver com a classe loading,  o modal aparecerá */
+        body.loading .modal {
+            display: block;
+        }
+</style>
+
+<script type="text/javascript" src="~/lib/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+<script type="text/javascript" src="~/lib/moment/moment.js"></script>
+<script type="text/javascript" src="~/JSFuncoes.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                if ($('#btnPesquisaCnpj').is(':focus')) {
+                    $('#btnPesquisaCnpj').trigger('click');
+                    return false;
+                }
+                else if ($('#btnSalvar, #btnVoltar').is(':focus')) {
+                    return true;
+                }
+                else {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+        $("#txtFederal").keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter!
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    $('#cmbEstado').change(function (event, idCidade) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetMunicipioAsync", "Funcao")',
+            data: { intEstado: $(this).val() },
+            success: function (response) {
+                $('#cmbMunicipio').empty().append('<option>Município...</option>');
+
+                $.each(response, function (i, p) {
+                    $('#cmbMunicipio').append($('<option>',
+                    {
+                        value: p.idMunicipio,
+                        text: p.dsMunicipio
+                    }));
+                });
+                if (idCidade != undefined) {
+                    $('#cmbMunicipio').val(idCidade);
+                }
+            },
+            error: function (jqXHR, exception) {
+                ajaxError(jqXHR, exception);
+            },
+        });
+    });
+
+    $('#dateNascimento').focusout(function () {
+        var d1 = moment(new Date()),
+            d2 = moment(new Date($(this).val())),
+            dDiff = d1.diff(d2, 'year');
+
+        if (dDiff < 18) {
+            $('#txtResponsavel').removeAttr('disabled');
+            $('#txtTelefoneResponsavel').removeAttr('disabled');
+            $('#txtCelularResponsavel').removeAttr('disabled');
+        }
+        else
+        {
+            $('#txtResponsavel').attr('disabled', true);
+            $('#txtTelefoneResponsavel').attr('disabled', true);
+            $('#txtCelularResponsavel').attr('disabled', true);
+        }
+    });
+
+    $('#btnPesquisaCnpj').click(function () {
+
+        if ($('#txtFederal').val().length < 14) {
+            $('div.validation-summary-valid ul').empty().append('<li>CNPJ Inválido</li>');
+            return;
+        }
+        else {
+            $('div.validation-summary-valid ul').empty();
+        }
+
+        $('input[id=txtNomepessoa]').val(null);
+        $('input[id=txtNomefantasia]').val(null);
+        $('input[id=dateNascimento]').val(null);
+        $('input[id=txtCep]').val(null);
+        $('input[id=txtEmail]').val(null);
+        $('input[id=txtLogradouro]').val(null);
+        $('input[id=txtComplemento]').val(null);
+        $('input[id=txtTelefone]').val(null);
+        $('input[id=txtNumero]').val(null);
+        $('select[id=cmbEstado]').val(null);
+        $('select[id=cmbMunicipio]').val(null);
+        $('select[id=cmbBairro]').val(null);
+        $('textarea[id=txtObservacao]').val(null);
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetCnpjAsync", "Funcao")',
+            data: { strCnpj: $('#txtFederal').val() },
+            success: function (val) {
+                //console.log(response);
+                $body = $("body");
+                $body.addClass("loading");
+
+                $('input[id=txtNomepessoa]').val(val.nome);
+                $('input[id=txtNomefantasia]').val(val.fantasia);
+                $('input[id=dateNascimento]').val(val.abertura);
+                $('input[id=txtCep]').val(val.cep);
+                $('input[id=txtEmail]').val(val.email);
+                $('input[id=txtLogradouro]').val(val.logradouro);
+                $('input[id=txtComplemento]').val(val.complemento);
+                $('input[id=txtTelefone]').val(val.telefone);
+                $('input[id=txtNumero]').val(val.numero);
+                $('select[id=cmbEstado]').val(val.idEstado);
+                $('#cmbEstado').trigger('change', [val.idMunicipio]);
+                $('select[id=cmbBairro]').val(val.idBairro);
+                $('textarea[id=txtObservacao]').val(val.strObservacao);
+
+                $body.removeClass("loading");
+            },
+            error: function (jqXHR, exception) {
+                $body.removeClass("loading");
+                ajaxError(jqXHR, exception);
+            }
+        });
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

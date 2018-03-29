@@ -1,0 +1,52 @@
+Update-Database (nome da migracao)
+Recriar o banco com Force para não precisar excluir os arquivos. Console Package Manger
+
+PM>Scaffold-DbContext "Conexão" Microsoft.EntityFrameworkCore.SqlServer -OutputDir DBNacbarEF -Force
+
+1- Passo recriar o usuário Identity
+
+    public class ApplicationUser : IdentityUser
+    {
+        public int IntIdEmpresa { get; set; }
+        public Empresa IdEmpresaNavigation { get; set; }
+    }
+    public partial class DBNACBARContext : IdentityDbContext<ApplicationUser>
+    {
+        public DBNACBARContext(DbContextOptions<DBNACBARContext> options) : base(options) { }
+    }
+    base.OnModelCreating(modelBuilder);
+
+2- Acrescentar a Lista do ApplicationUser na Empresa.
+	modelBuilder.Entity<ApplicationUser>(entity =>
+            {
+                entity.HasIndex(e => e.IntIdEmpresa);
+
+                entity.HasIndex(e => e.NormalizedEmail)
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName)
+                    .HasName("UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.IntIdEmpresa).HasColumnName("Id_Empresa");
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+
+                entity.HasOne(d => d.IdEmpresaNavigation)
+                    .WithMany(p => p.ApplicationUser)
+                    .HasForeignKey(d => d.IntIdEmpresa)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AspNetUsers_EMPRESA");
+            });	 
+
+3- Excluir todas ligaçãoes de tabela Identity que vier do banco "AspNetUsers e afins"
+
+4- Fim.
+

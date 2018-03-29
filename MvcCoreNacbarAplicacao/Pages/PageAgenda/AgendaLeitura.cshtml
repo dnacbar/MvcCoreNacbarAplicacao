@@ -1,0 +1,171 @@
+﻿@page
+@model AgendaLeituraModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "NsApp";
+}
+
+@* jQUery - DataTable *@
+<script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+@* jQUery - DataTable BootStrap *@
+<script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+@* CSS - DataTable BootStrap *@
+<link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<h4>AGENDA</h4>
+
+<label class="form-inline">
+    DATA: <input type="date" class="form-control" id="dateAgenda" autocomplete="off" />
+    <button type="button" class="btn btn-create" id="btnPesquisar">PESQUISAR</button>
+</label>
+<br />
+<table id="tableCliente" class="table table-hover" cellspacing="0">
+    <thead>
+        <tr>
+            <th>HORÁRIO</th>
+            <th>CLIENTE</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>HORÁRIO</th>
+            <th>CLIENTE</th>
+        </tr>
+    </tfoot>
+    <tbody></tbody>
+</table>
+<br />
+<table id="tableServico" class="table table-hover" cellspacing="0">
+    <thead>
+        <tr>
+            <th>PROFISSIONAL</th>
+            <th>SERVIÇO</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>PROFISSIONAL</th>
+            <th>SERVIÇO</th>
+        </tr>
+    </tfoot>
+    <tbody></tbody>
+</table>
+<br />
+<table id="tableProduto" class="table table-hover" cellspacing="0">
+    <thead>
+        <tr>
+            <th>PRODUTO</th>
+            <th>QTDE</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>PRODUTO</th>
+            <th>QTDE</th>
+        </tr>
+    </tfoot>
+    <tbody></tbody>
+</table>
+
+
+<div class="text-center">
+    <a asp-page="AgendaCriar" class="btn btn-primary">INCLUIR</a>
+    <a asp-page="AgendaFinanceiro" class="btn btn-primary disabled" id="btnAgendaFinanceiro">FINALIZAR HORÁRIO</a>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var now = new Date();
+
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+        var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+        $('#dateAgenda').val(today);
+    });
+
+
+    $('#btnPesquisar').click(function () {
+        $('#btnAgendaFinanceiro').addClass('disabled');
+
+        $('#tableCliente tbody tr').remove();
+        $('#tableServico tbody tr').remove();
+        $('#tableProduto tbody tr').remove();
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAgendaAsync", "Funcao")',
+            data: { dateAgenda: $('#dateAgenda').val() },
+            success: function (response) {
+                console.log(response);
+                $('#tableCliente tbody tr').remove();
+                $.each(response, function (i, val) {
+                    $('#tableCliente tbody').append(
+                        '<tr>' +
+                        '<td hidden>' + val.idAgenda + '</td>' +
+                        '<td>' + val.hrAgendamento.substr(0, 5) + '</td>' +
+                        '<td>' + val.id.dsNomepessoa + '</td>' +
+                        '</tr>');
+                });
+
+                $('#tableCliente tbody').on('click', 'tr', function () {
+                    $('#tableCliente tbody tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $('#btnAgendaFinanceiro').removeClass('disabled');
+
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetAgendaServicoAsync", "Funcao")',
+                        data: { intAgenda: $(this).children('td').html() },
+                        success: function (response) {
+                            //console.log(response);
+                            $('#tableServico tbody tr').remove();
+                            $('#tableProduto tbody tr').remove();
+                             $.each(response, function (i, val) {
+                                 $('#tableServico tbody').append(
+                                     '<tr>' +
+                                     '<td hidden>' + val.idAgendaservico + '</td>' +
+                                     '<td>' + val.idNavigation.id.dsNomepessoa + '</td>' +
+                                     '<td>' + val.idNavigation.idServicoNavigation.dsServico + '</td>' +
+                                     '<tr>');
+                             });
+
+                             //$('body').on('click', '#tableServico tbody tr', function () {
+                             //    $.ajax({
+                             //        type: "GET",
+                             //        url: '@Url.Action("GetAgendaServicoProdutoAsync", "Funcao")',
+                             //        data: { intAgendaServico: $(this).children('td').html() },
+                             //        success: function (response) {
+                             //            //console.log(response);
+                             //            $('#tableProduto tbody tr').remove();
+                             //            $.each(response, function (i, val) {
+                             //                $('#tableProduto tbody').append(
+                             //                    '<tr>' +
+                             //                    '<td hidden>' + val.idAgendaServicoproduto + '</td>' +
+                            //                    '<td>' + val.id.dsDescproduto + '</td>' +
+                             //                    '<td>' + val.nmQuantidade + '</td>' +
+                             //                    '<tr>');
+                             //            });
+                             //        },
+                             //    });
+                             //});
+                        },
+                        error: function (jqXHR, exception) {
+                            ajaxError(jqXHR, exception);
+                        },
+                    });
+                });
+            },
+            error: function (jqXHR, exception) {
+                ajaxError(jqXHR, exception);
+            },
+        });
+    });
+</script>
+
+<style>
+    .selected td {
+        background-color: darkgray !important;
+    }
+</style>

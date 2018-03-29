@@ -1,0 +1,363 @@
+﻿@page
+@model BasicoLeituraModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.BAIRRO)
+    {
+        ViewData["Basico"] = "BAIRRO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.COR)
+    {
+        ViewData["Basico"] = "COR";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.FORMAPAGAMENTO)
+    {
+        ViewData["Basico"] = "FORMA PAGAMENTO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MARCA)
+    {
+        ViewData["Basico"] = "MARCA";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MOTIVOBLOQUEIO)
+    {
+        ViewData["Basico"] = "MOTIVO BLOQUEIO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.SERVICO)
+    {
+        ViewData["Basico"] = "SERVIÇO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TAMANHO)
+    {
+        ViewData["Basico"] = "TAMANHO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPESSOA)
+    {
+        ViewData["Basico"] = "TIPO PESSOA";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPRODUTO)
+    {
+        ViewData["Basico"] = "TIPO PRODUTO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.UNIDADE)
+    {
+        ViewData["Basico"] = "UNIDADE";
+    }
+    ViewData["Title"] = "NSAPP";
+}
+
+@* jQUery - DataTable *@
+<script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+@* jQUery - DataTable BootStrap *@
+<script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+@* CSS - DataTable BootStrap *@
+<link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<script>
+    $(document).ready(function () {
+        $('#tableBasico').DataTable({
+            language: {
+                "decimal": "",
+                "emptyTable": "SEM DADOS!",
+                "info": "MOSTRANDO _START_ DE _END_ ATÉ _TOTAL_ LINHAS",
+                "infoEmpty": "SEM DADOS",
+                "infoFiltered": "(FILTRADO DE _MAX_ LINHAS)",
+                "infoPostFix": "",
+                thousands: ".",
+                lengthMenu: "MOSTRAR _MENU_ ITEMS:",
+                "loadingRecords": "Carregando...",
+                "processing": "Processando...",
+                search: "FILTRO:",
+                "zeroRecords": "NENHUM DADO ENCONTRADO...",
+                paginate: {
+                    first: "PRIMEIRO",
+                    last: "ÚLTIMO",
+                    next: "PRÓXIMO",
+                    previous: "ANTERIOR"
+                },
+                "aria": {
+                    "sortAscending": ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                }
+            },
+            lengthMenu: [[15, 25, 50, 100, -1], [15, 25, 50, 100, "All"]]
+        });
+    })
+</script>
+<h4>@ViewData["Basico"]</h4>
+<hr />
+<table id="tableBasico" class="table table-hover table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            @{
+                if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.BAIRRO)
+                {
+                    <th>BAIRRO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.COR)
+                {
+                    <th>COR</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.ESTADOCIVIL)
+                {
+                    <th>ESTADO CIVIL</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.FORMAPAGAMENTO)
+                {
+                    <th>FORMA PAGAMENTO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MARCA)
+                {
+                    <th>MARCA</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MOTIVOBLOQUEIO)
+                {
+                    <th>MOTIVO BLOQUEIO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.SERVICO)
+                {
+                    <th>SERVIÇO</th>
+                    <th>VALOR SERVIÇO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TAMANHO)
+                {
+                    <th>TAMANHO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPESSOA)
+                {
+                    <th>TIPO PESSOA</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPRODUTO)
+                {
+                    <th>TIPO PRODUTO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.UNIDADE)
+                {
+                    <th>UNIDADE</th>
+                    <th>GERENCIAR</th>
+                }
+            }
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            @{
+                if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.BAIRRO)
+                {
+                    <th>BAIRRO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.COR)
+                {
+                    <th>COR</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.ESTADOCIVIL)
+                {
+                    <th>ESTADO CIVIL</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.FORMAPAGAMENTO)
+                {
+                    <th>FORMA PAGAMENTO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MARCA)
+                {
+                    <th>MARCA</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MOTIVOBLOQUEIO)
+                {
+                    <th>MOTIVO BLOQUEIO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.SERVICO)
+                {
+                    <th>SERVIÇO</th>
+                    <th>VALOR SERVIÇO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TAMANHO)
+                {
+                    <th>TAMANHO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPESSOA)
+                {
+                    <th>TIPO PESSOA</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPRODUTO)
+                {
+                    <th>TIPO PRODUTO</th>
+                    <th>GERENCIAR</th>
+                }
+                else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.UNIDADE)
+                {
+                    <th>UNIDADE</th>
+                    <th>GERENCIAR</th>
+                }
+            }
+        </tr>
+    </tfoot>
+    <tbody>
+        @{
+            if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.BAIRRO)
+            {
+                foreach (Bairro item in @Model.LstBairro)
+                {
+                    <tr>
+                        <td>@item.DsBairro</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdBairro" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.COR)
+            {
+                foreach (Cor item in @Model.LstCor)
+                {
+                    <tr>
+                        <td>@item.DsCor</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.DsCor" class="btn btn-xs btn-warning">EDITAR</a>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.ESTADOCIVIL)
+            {
+                foreach (Estadocivil item in @Model.LstEstadocivil)
+                {
+                    <tr>
+                        <td>@item.DsEstadocivil</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdEstadocivil" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.FORMAPAGAMENTO)
+            {
+                foreach (Formapagamento item in @Model.LstFormapagamento)
+                {
+                    <tr>
+                        <td>@item.DsFormapagamento</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdFormapagamento" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MARCA)
+            {
+                foreach (Marca item in @Model.LstMarca)
+                {
+                    <tr>
+                        <td>@item.DsMarca</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdMarca" class="btn btn-xs btn-warning">EDITAR</a>
+
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MOTIVOBLOQUEIO)
+            {
+                foreach (Motivobloqueio item in @Model.LstMotivobloqueio)
+                {
+                    <tr>
+                        <td>@item.DsMotivobloqueio</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdBloqueio" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.SERVICO)
+            {
+                foreach (Servico item in @Model.LstServico)
+                {
+                    <tr>
+                        <td>@item.DsServico</td>
+                        @if (item.NmValor.HasValue)
+                        {
+                            <td>@item.NmValor.Value.ToString("C")</td>
+                        }
+                        else
+                        {
+                            <td>SEM VALOR</td>
+                        }
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdServico" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TAMANHO)
+            {
+                foreach (Tamanho item in @Model.LstTamanho)
+                {
+                    <tr>
+                        <td>@item.DsTamanho</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdTamanho" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPESSOA)
+            {
+                foreach (Tipopessoa item in @Model.LstTipopessoa)
+                {
+                    <tr>
+                        <td>@item.DsTipopessoa</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdTipopessoa" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPRODUTO)
+            {
+                foreach (Tipoproduto item in @Model.LstTipoproduto)
+                {
+                    <tr>
+                        <td>@item.DsTipoproduto</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdTipoproduto" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.UNIDADE)
+            {
+                foreach (Unidade item in @Model.LstUnidade)
+                {
+                    <tr>
+                        <td>@item.DsUnidade</td>
+                        <td>
+                            <a asp-page="BasicoCriarEditar" asp-route-id="@item.IdUnidade" class="btn btn-xs btn-warning">EDITAR</a>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-sm btn-primary" asp-page="BasicoCriarEditar">CRIAR @ViewData["Basico"]</a>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

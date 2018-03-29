@@ -1,0 +1,198 @@
+﻿@page
+@model HorarioLeituraModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "NsApp";
+}
+
+@* jQUery - DataTable *@
+<script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+@* jQUery - DataTable BootStrap *@
+<script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+@* CSS - DataTable BootStrap *@
+<link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<h4>HORÁRIO</h4>
+
+<div class="row" style="border:solid 1px white">
+    <label class="col-md-5">
+        CLIENTE
+        <select class="form-control" id="cmbCliente">
+            <option value="" selected="selected">Selecione o Cliente...</option>
+            @foreach (Pessoa item in Model.LstCliente)
+            {
+                <option data-value='@item.IdPessoa'>@{@item.DsNomepessoa}</option>
+    }
+        </select>
+    </label>
+    <label class="col-md-5">
+        PROFISSIONAL
+        <select class="form-control" id="cmbProfissional">
+            <option value="" selected="selected">Selecione o Profissional...</option>
+            @foreach (Profissional item in Model.LstProfissional)
+            {
+                <option data-value='{"profissional": @item.IdProfissional,
+                                         "profissao": @item.IdProfissao,
+                                         "servico": @item.IdServico}'>
+                    @{@item.Id.DsNomepessoa}
+                </option>
+    }
+        </select>
+    </label>
+    <label class="col-md-2">
+        DIA SEMANA
+        <select asp-items="@(new SelectList(Model.DicDiaSemana, "Key", "Value"))" class="form-control" id="cmbDiasemana">
+            <option value="" selected="selected">Dia da Semana...</option>
+        </select>
+    </label>
+</div>
+<br />
+
+<table id="tableHorario" class="table table-hover table-bordered" cellspacing="0">
+    <thead>
+        <tr>
+            <th>CLIENTE</th>
+            <th>PROFISSIONAL</th>
+            <th>PROFISSÃO</th>
+            <th>SERVIÇO</th>
+            <th>DIA SEMANA</th>
+            <th>HORÁRIO INICIAL</th>
+            <th>HORÁRIO FINAL</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>CLIENTE</th>
+            <th>PROFISSIONAL</th>
+            <th>PROFISSÃO</th>
+            <th>SERVIÇO</th>
+            <th>DIA SEMANA</th>
+            <th>HORÁRIO INICIAL</th>
+            <th>HORÁRIO FINAL</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        <tr>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="col-md-12">
+    <div class="form-group col-md-6 col-md-offset-3">
+        <a asp-page="HorarioCriar" class="btn btn-primary form-control">INCLUIR</a>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $('#cmbCliente').change(function () {
+        $('#cmbDiasemana option:eq("")').prop('selected', true);
+
+        $('#tableHorario tbody tr').remove();
+
+        if ($('#cmbProfissional').val() != '') {
+            var IdProfissional = null, IdProfissao = null, IdServico = null;
+
+            IdProfissional = $('#cmbProfissional').find(':selected').data('value').profissional;
+            IdProfissao = $('#cmbProfissional').find(':selected').data('value').profissao;
+            IdServico = $('#cmbProfissional').find(':selected').data('value').servico;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetHorarioAsync", "Funcao")',
+            data: {
+                intIdCliente: $('#cmbCliente').find(':selected').data('value'),
+                intIdProfissional: IdProfissional,
+                intIdProfissao: IdProfissao,
+                intIdServico: IdServico,
+            },
+            success: function (response) {
+                $.each(response, function (i, val) {
+                    $('#tableHorario tbody').append(
+                        '<tr>' +
+                        '<td>' + val.id.dsNomepessoa + '</td>' +
+                        '<td>' + val.idNavigation.id.dsNomepessoa + '</td>' +
+                        '<td>' + val.idNavigation.idProfissaoNavigation.dsTipopessoa + '</td>' +
+                        '<td>' + val.idNavigation.idServicoNavigation.dsServico + '</td>' +
+                        '<td>' + val.hrHorariofinal + '</td>' +
+                        '<td>' + val.hrHorarioinicial + '</td>' +
+                        '<td>' + val.cdDiasemana + '</td>' +
+                        '</tr>');
+                });
+            },
+        });
+    });
+
+    $('#cmbProfissional').change(function () {
+        $('#cmbDiasemana option:eq("")').prop('selected', true);
+
+        $('#tableHorario tbody tr').remove();
+
+        if ($('#cmbProfissional').val() != '') {
+            var IdProfissional = null, IdProfissao = null, IdServico = null;
+
+            IdProfissional = $('#cmbProfissional').find(':selected').data('value').profissional;
+            IdProfissao = $('#cmbProfissional').find(':selected').data('value').profissao;
+            IdServico = $('#cmbProfissional').find(':selected').data('value').servico;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetHorarioAsync", "Funcao")',
+            data: {
+                intIdCliente: $('#cmbCliente').find(':selected').data('value'),
+                intIdProfissional: IdProfissional,
+                intIdProfissao: IdProfissao,
+                intIdServico: IdServico,
+            },
+            success: function (response) {
+                $.each(response, function (i, val) {
+                    $('#tableHorario tbody').append(
+                        '<tr>' +
+                        '<td>' + val.id.dsNomepessoa + '</td>' +
+                        '<td>' + val.idNavigation.id.dsNomepessoa + '</td>' +
+                        '<td>' + val.idNavigation.idProfissaoNavigation.dsTipopessoa + '</td>' +
+                        '<td>' + val.idNavigation.idServicoNavigation.dsServico + '</td>' +
+                        '<td>' + val.hrHorariofinal + '</td>' +
+                        '<td>' + val.hrHorarioinicial + '</td>' +
+                        '<td>' + val.cdDiasemana + '</td>' +
+                        '</tr>');
+                });
+            },
+        });
+    });
+
+    $('#cmbDiasemana').change(function () {
+        $('#cmbProfissional option:eq(""), #cmbCliente option:eq("")').prop('selected', true);
+
+        $('#tableHorario tbody tr').remove();
+
+        if ($('#cmbDiasemana').val() == '') {
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetHorarioAsync", "Funcao")',
+            data: {
+                strDiaSemana: $('#cmbDiasemana').val(),
+            },
+            success: function (response) {
+                $.each(response, function (i, val) {
+                    $('#tableHorario tbody').append(
+                        '<tr>' +
+                        '<td>' + val.id.dsNomepessoa + '</td>' +
+                        '<td>' + val.idNavigation.id.dsNomepessoa + '</td>' +
+                        '<td>' + val.idNavigation.idProfissaoNavigation.dsTipopessoa + '</td>' +
+                        '<td>' + val.idNavigation.idServicoNavigation.dsServico + '</td>' +
+                        '<td>' + val.hrHorariofinal + '</td>' +
+                        '<td>' + val.hrHorarioinicial + '</td>' +
+                        '<td>' + val.cdDiasemana + '</td>' +
+                        '</tr>');
+                });
+            },
+        });
+    });
+
+</script>

@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "/Pages/_Layout.cshtml";
+}
+
+<h2>GERENCIE SEU USUÁRIO</h2>
+
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            @await Html.PartialAsync("_ManageNav")
+        </div>
+        <div class="col-md-offset-1 col-md-6">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

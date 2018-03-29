@@ -1,0 +1,33 @@
+﻿@page
+@model UFCriarEditarModel
+@{
+    ViewData["Title"] = "NsApp";
+}
+
+<h2>MUNICÍPIO</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Municipio.IdEstado">ESTADO</label>
+                <select autofocus asp-for="Municipio.IdEstado" asp-items="@(new SelectList(Model.LstEstado, "IdEstado", "DsEstado"))" class="form-control">
+                    <option value="@null">Estado...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input asp-for="Municipio.IdMunicipio" class="hide" />
+                <label asp-for="Municipio.DsMunicipio">MUNICÍPIO</label>
+                <input autocomplete="off" asp-for="Municipio.DsMunicipio" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">SALVAR</button>
+            <a href="/UF/UFLeitura?EnumUf=MUNICIPIO" class="btn btn-primary">RETORNAR</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

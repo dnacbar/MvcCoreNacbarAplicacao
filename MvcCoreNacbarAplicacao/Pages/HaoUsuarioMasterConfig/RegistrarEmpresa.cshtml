@@ -1,0 +1,289 @@
+﻿@page
+@model RegistrarEmpresa
+@{
+    ViewData["Title"] = "REGISTRAR EMPRESA";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <h4>Criar um novo Usuário</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group col-md-5">
+        <label asp-for="Empresa.DsNomeempresa" class="control-label">Nome Empresa</label>
+        <input asp-for="Empresa.DsNomeempresa" class="form-control" id="txtNomeempresa" autocomplete="off" />
+    </div>
+    <label class="control-label col-md-1" style="margin-top:23px">
+        <input type="checkbox" id="ckbFisica" />Física
+    </label>
+    <div class="form-group col-md-6">
+        <label asp-for="Empresa.DsNomefantasia" class="control-label">Nome Fantasia</label>
+        <input asp-for="Empresa.DsNomefantasia" class="form-control" id="txtNomefantasia" autocomplete="off" />
+    </div>
+    @*LINHA 2*@
+    <div class="form-group col-md-4">
+        <label asp-for="Empresa.DsInscricaofederal" class="control-label">Cnpj/Cpf</label>
+        <input asp-for="Empresa.DsInscricaofederal" class="form-control" id="txtFederal" autocomplete="off" maxlength="14" />
+    </div>
+    <button type="button" class="btn btn-primary col-md-2" style="margin-top:28px;" id="btnPesquisaCnpj">Pesquisar Cnpj</button>
+    <div class="form-group col-md-3">
+        <label asp-for="Empresa.DsInscricaoestadual" class="control-label">Inscrição Estadual</label>
+        <input asp-for="Empresa.DsInscricaoestadual" class="form-control" id="txtEstadual" autocomplete="off" />
+    </div>
+    <div class="form-group col-md-3">
+        <label asp-for="Empresa.DsInscricaomunicipal" class="control-label">Inscrição Estadual</label>
+        <input asp-for="Empresa.DsInscricaomunicipal" class="form-control" id="txtMunicipal" autocomplete="off" />
+    </div>
+    @*LINHA 2*@
+    @*LINHA 3*@
+    <div class="form-group col-md-2">
+        <label class="control-label">ESTADO</label>
+        <select class="form-control" asp-items="@(new SelectList(Model.LstEstado, "IdEstado", "DsEstado"))" id="cmbEstado">
+            <option value="">Estado...</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label asp-for="Empresa.IdMunicipio" class="control-label">MUNICÍPIO</label>
+        <select asp-for="Empresa.IdMunicipio" class="form-control" id="cmbMunicipio">
+            <option value="">Município...</option>
+        </select>
+    </div>
+    <div class="form-group col-md-6">
+        <label asp-for="Empresa.IdBairro" class="control-label">Bairro</label>
+        <select asp-for="Empresa.IdBairro" asp-page-handler="Empresa" class="form-control" asp-items="@(new SelectList(Model.LstBairro, "IdBairro", "DsBairro"))" id="cmbBairro">
+            <option value="">Selecione o Bairro...</option>
+        </select>
+    </div>
+    @*LINHA 3*@
+    @*LINHA 4*@
+    <div class="form-group col-md-2">
+        <label asp-for="Empresa.DsCep" class="control-label">Cep</label>
+        <input asp-for="Empresa.DsCep" class="form-control" id="txtCep" autocomplete="off" data-mask="00000-000" />
+    </div>
+    <div class="form-group col-md-5">
+        <label asp-for="Empresa.DsLogradouro" class="control-label">Logradouro</label>
+        <input asp-for="Empresa.DsLogradouro" class="form-control" id="txtLogradouro" autocomplete="off" />
+    </div>
+    <div class="form-group col-md-4">
+        <label asp-for="Empresa.DsComplemento" class="control-label">Complemento</label>
+        <input asp-for="Empresa.DsComplemento" class="form-control" id="txtComplemento" autocomplete="off" />
+    </div>
+    <div class="form-group col-md-1">
+        <label asp-for="Empresa.DsNumero" class="control-label">Número</label>
+        <input asp-for="Empresa.DsNumero" class="form-control" id="txtNumero" autocomplete="off" maxlength="6" />
+    </div>
+    <div class="form-group col-md-2">
+        <label asp-for="Empresa.DsTelefone" class="control-label">Telefone</label>
+        <input asp-for="Empresa.DsTelefone" class="form-control" id="txtTelefone" autocomplete="off" />
+    </div>
+    <div class="form-group col-md-4">
+        <label asp-for="Empresa.DsEmail" class="control-label">Email</label>
+        <input asp-for="Empresa.DsEmail" class="form-control" id="txtEmail" autocomplete="off" />
+    </div>
+    @*LINHA 5*@
+    @if (ViewData["id"] == null)
+    {
+        <div class="form-group col-md-2">
+            <label asp-for="Input.UserName"></label>
+            <input asp-for="Input.UserName" class="form-control" maxlength="15" autocomplete="off" />
+        </div>
+        <div class="form-group col-md-2">
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" class="form-control" maxlength="15" />
+        </div>
+        <div class="form-group col-md-2">
+            <label asp-for="Input.ConfirmPassword"></label>
+            <input asp-for="Input.ConfirmPassword" class="form-control" maxlength="15" />
+        </div>
+    }
+    <button id="btnSalvar" type="submit" class="btn btn-primary">REGISTRAR</button>
+    <a asp-page="LeituraEmpresa" class="btn btn-primary">VOLTAR</a>
+</form>
+
+<div class="modal"></div>
+
+<style type="text/css">
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 255, 255, 255, .8 ) 50% 50% no-repeat;
+    }
+
+    /* enquanto estiver carregando, o scroll da página estará desativado */
+    body.loading {
+        overflow: hidden;
+    }
+
+        /* a partir do momento em que o body estiver com a classe loading,  o modal aparecerá */
+        body.loading .modal {
+            display: block;
+        }
+</style>
+
+<script type="text/javascript" src="~/lib/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+<script type="text/javascript" src="~/JSFuncoes.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                if ($('#btnPesquisaCnpj').is(':focus')) {
+                    $('#btnPesquisaCnpj').trigger('click');
+                    return false;
+                }
+                else if ($('#btnSalvar').is(':focus')) {
+                    return true;
+                }
+                else {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+        $('#txtFederal, #txtTelefone').keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+                // Allow: Ctrl+A,Ctrl+C,Ctrl+V, Command+A
+                ((e.keyCode == 65 || e.keyCode == 86 || e.keyCode == 67) && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        }).on('focusout', function (e) {
+            var p = $(this);
+            if (p.attr('id') == 'txtFederal')
+                p.val(p.val().replace(/[^0-9]/g, ''));
+        }).on('paste', function (e) {
+            var p = $(this);
+            setTimeout(function () {
+                p.val(p.val().replace(/[^0-9]/g, ''));
+            }, 5);
+            });
+    });
+
+
+  
+
+    var SPMaskBehavior = function (val) {
+        return val.replace(/\D/g, '').length === 11 ? '(00)00000-0000' : '(00)0000-00009';
+    },
+        spOptions = {
+            onKeyPress: function (val, e, field, options) {
+                field.mask(SPMaskBehavior.apply({}, arguments), options);
+            }
+        };
+
+    $('#txtTelefone').mask(SPMaskBehavior, spOptions);
+
+    $('#cmbEstado').change(function (event, idCidade) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetMunicipioAsync", "Funcao")',
+            data: { intEstado: $(this).val() },
+            success: function (response) {
+                $('#cmbMunicipio').empty().append('<option>Município...</option>');
+
+                $.each(response, function (i, p) {
+                    $('#cmbMunicipio').append($('<option>',
+                    {
+                        value: p.idMunicipio,
+                        text: p.dsMunicipio
+                    }));
+                });
+                if (idCidade != undefined) {
+                    $('#cmbMunicipio').val(idCidade);
+                }
+            },
+            error: function (jqXHR, exception) {
+                ajaxError(jqXHR, exception);
+            },
+        });
+    });
+
+    $('#btnPesquisaCnpj').click(function () {
+
+        if ($('#txtFederal').val().length < 14) {
+            $('div.validation-summary-valid ul').empty().append('<li>CNPJ Inválido</li>');
+            return;
+        }
+        else {
+            $('div.validation-summary-valid ul').empty();
+        }
+
+        $('input[id=txtNomeempresa]').val(null);
+        $('input[id=txtNomefantasia]').val(null);
+        $('input[id=txtCep]').val(null);
+        $('input[id=txtEmail]').val(null);
+        $('input[id=txtLogradouro]').val(null);
+        $('input[id=txtComplemento]').val(null);
+        $('input[id=txtTelefone]').val(null);
+        $('input[id=txtNumero]').val(null);
+        $('select[id=cmbEstado]').val(null);
+        $('select[id=cmbMunicipio]').val(null);
+        $('select[id=cmbBairro]').val(null);
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetCnpjAsync", "Funcao")',
+            data: { strCnpj: $('#txtFederal').val() },
+            success: function (val) {
+                //console.log(val);
+                $body = $("body");
+                $body.addClass("loading");
+
+                $('input[id=txtNomeempresa]').val(val.nome);
+                $('input[id=txtNomefantasia]').val(val.fantasia);
+                $('input[id=txtCep]').val(val.cep);
+                $('input[id=txtEmail]').val(val.email);
+                $('input[id=txtLogradouro]').val(val.logradouro);
+                $('input[id=txtComplemento]').val(val.complemento);
+                $('input[id=txtTelefone]').val(val.telefone);
+                $('input[id=txtNumero]').val(val.numero);
+                $('select[id=cmbEstado]').val(val.idEstado);
+                $('#cmbEstado').trigger('change', [val.idMunicipio]);
+                $('select[id=cmbBairro]').val(val.idBairro);
+                $body.removeClass("loading");
+            },
+            error: function (jqXHR, exception) {
+                $body.removeClass("loading");
+                $('.validation-summary-valid ul').empty().append('<li>' + jqXHR.responseText + '</li>');
+                ajaxError(jqXHR, exception);
+            }
+        });
+    })
+
+    $('#ckbFisica').click(function () {
+        if ($('#ckbFisica').is(':checked')) {
+            $('#txtNomefantasia').prop('disabled', true);
+            $('#txtEstadual').prop('disabled', true);
+            $('#txtMunicipal').prop('disabled', true);
+            $('#btnPesquisaCnpj').prop('disabled', true);
+            $('#txtFederal').prop('maxlength', 11);
+        }
+        else {
+            $('#txtNomefantasia').prop('disabled', false);
+            $('#txtEstadual').prop('disabled', false);
+            $('#txtMunicipal').prop('disabled', false);
+            $('#btnPesquisaCnpj').prop('disabled', false);
+            $('#txtFederal').prop('maxlength', 14);
+        }
+    });
+</script>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

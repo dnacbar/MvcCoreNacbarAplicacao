@@ -1,0 +1,135 @@
+﻿@page
+@model BasicoCriarEditarModel
+@{
+    if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.BAIRRO)
+    {
+        ViewData["Basico"] = "BAIRRO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.COR)
+    {
+        ViewData["Basico"] = "COR";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.FORMAPAGAMENTO)
+    {
+        ViewData["Basico"] = "FORMA PAGAMENTO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MARCA)
+    {
+        ViewData["Basico"] = "MARCA";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MOTIVOBLOQUEIO)
+    {
+        ViewData["Basico"] = "MOTIVO BLOQUEIO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.SERVICO)
+    {
+        ViewData["Basico"] = "SERVIÇO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TAMANHO)
+    {
+        ViewData["Basico"] = "TAMANHO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPESSOA)
+    {
+        ViewData["Basico"] = "TIPO PESSOA";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPRODUTO)
+    {
+        ViewData["Basico"] = "TIPO PRODUTO";
+    }
+    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.UNIDADE)
+    {
+        ViewData["Basico"] = "UNIDADE";
+    }
+
+    ViewData["Title"] = "NsApp";
+}
+
+<h2>@ViewData["Basico"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <hr />
+            <div class="form-group">
+                @{  
+                    if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.BAIRRO)
+                    {
+                        <input asp-for="Bairro.IdBairro" class="hide" />
+                        <label asp-for="Bairro.DsBairro">BAIRRO</label>
+                        <input asp-for="Bairro.DsBairro" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.COR)
+                    {
+                        <input asp-for="Cor.IdCor" class="hide" />
+                        <label asp-for="Cor.DsCor">COR</label>
+                        <input asp-for="Cor.DsCor" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.ESTADOCIVIL)
+                    {
+                        <input asp-for="Estadocivil.IdEstadocivil" class="hide" />
+                        <label asp-for="Estadocivil.DsEstadocivil">ESTADO CIVIL</label>
+                        <input asp-for="Estadocivil.DsEstadocivil" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.FORMAPAGAMENTO)
+                    {
+                        <input asp-for="Formapagamento.IdFormapagamento" class="hide" />
+                        <label asp-for="Formapagamento.DsFormapagamento">FORMA PAGAMENTO</label>
+                        <input asp-for="Formapagamento.DsFormapagamento" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MARCA)
+                    {
+                        <input asp-for="Marca.IdMarca" class="hide" />
+                        <label asp-for="Marca.DsMarca">MARCA</label>
+                        <input asp-for="Marca.DsMarca" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.MOTIVOBLOQUEIO)
+                    {
+                        <input asp-for="Motivobloqueio.IdBloqueio" class="hide" />
+                        <label asp-for="Motivobloqueio.DsMotivobloqueio">MOTIVO BLOQUEIO</label>
+                        <input asp-for="Motivobloqueio.DsMotivobloqueio" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.SERVICO)
+                    {
+                        <input asp-for="Servico.IdServico" class="hide" />
+                        <label asp-for="Servico.DsServico">SERVIÇO</label>
+                        <input asp-for="Servico.DsServico" class="form-control" autocomplete="off" />
+                        <label asp-for="Servico.NmValor">VALOR</label>
+                        <input asp-for="Servico.NmValor" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TAMANHO)
+                    {
+                        <input asp-for="Tamanho.IdTamanho" class="hide" />
+                        <label asp-for="Tamanho.DsTamanho">TAMANHO</label>
+                        <input asp-for="Tamanho.DsTamanho" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPESSOA)
+                    {
+                        <input asp-for="Tipopessoa.IdTipopessoa" class="hide" />
+                        <label asp-for="Tipopessoa.DsTipopessoa">TIPO PESSOA</label>
+                        <input asp-for="Tipopessoa.DsTipopessoa" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.TIPOPRODUTO)
+                    {
+                        <input asp-for="Tipoproduto.IdTipoproduto" class="hide" />
+                        <label asp-for="Tipoproduto.DsTipoproduto">TIPO PRODUTO</label>
+                        <input asp-for="Tipoproduto.DsTipoproduto" class="form-control" autocomplete="off" />
+                    }
+                    else if (BasicoLeituraModel.EnumBasico == BasicoLeituraModel.enumBasico.UNIDADE)
+                    {
+                        <input asp-for="Unidade.IdUnidade" class="hide" />
+                        <label asp-for="Unidade.DsUnidade">UNIDADE</label>
+                        <input asp-for="Unidade.DsUnidade" class="form-control" autocomplete="off" />
+                    }
+                }
+            </div>
+            <button type="submit" class="btn btn-primary">SALVAR</button>
+            <a href="/PageBasico/BasicoLeitura?EnumBasico=@BasicoLeituraModel.EnumBasico.ToString()" class="btn btn-primary">RETORNAR</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

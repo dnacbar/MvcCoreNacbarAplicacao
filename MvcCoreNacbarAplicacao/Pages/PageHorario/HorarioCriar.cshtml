@@ -1,0 +1,131 @@
+﻿@page
+@model HorarioCriarModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "NsApp"; 
+}
+
+<h4>CRIAR HORÁRIO</h4>
+<div class="row" style="border:solid 1px white">
+    <label class="col-md-6">
+        CLIENTE
+        <select autofocus class="form-control" id="cmbCliente">
+            <option value="" selected="selected">Cliente...</option>
+            @foreach (Pessoa item in Model.LstCliente)
+            {
+                <option data-value="@item.IdPessoa">@{@item.DsNomepessoa}</option>
+            }
+        </select>
+    </label>
+    <label class="col-md-6">
+        PROFISSIONAL
+        <select class="form-control" id="cmbProfissional">
+            <option value="" selected="selected">Profissional...</option>
+            @foreach (Profissional item in Model.LstProfissional)
+            {
+                <option data-value='{"profissional":@item.IdProfissional,"profissao":@item.IdProfissao,"servico":@item.IdServico}'>
+                    @{@item.Id.DsNomepessoa}
+                </option>
+            }
+        </select>
+    </label>
+    <button class="btn btn-create col-md-4 col-md-offset-1" id="btnAdicionar">ADICIONAR HORÁRIO</button>
+    <button class="btn btn-danger col-md-offset-2 col-md-4" id="btnRemover">REMOVER HORÁRIO</button>
+</div>
+
+<form method="post" class="form-inline">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <hr id="hr" />
+
+    <hr />
+    <div class="form-group bottom">
+        <button type="button" class="btn btn-primary" id="btnSalvar">SALVAR</button>
+        <button type="button" class="btn btn-primary">SAIR</button>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+
+    //$('#cmbProfissional').change(function () {
+    //    alert($(this).find(':selected').data('value').profissional);
+    //});
+
+    $('#btnAdicionar').click(function () {
+        if ($('#cmbCliente').val() == '') {
+            $('.validation-summary-valid ul').empty().append('<li>Selecione o cliente e o profissional</li>');
+            $('#cmbCliente').focus();
+            return;
+        }
+
+        if ($('#cmbProfissional').val() == '') {
+            $('.validation-summary-valid ul').empty().append('<li>Selecione o cliente e o profissional</li>');
+            $('#cmbProfissional').focus();
+            return;
+        }
+
+        $('.validation-summary-valid ul').empty();
+
+        $('form #hr').after(
+            '<div class="form-group" id="divHorario">' +
+            '<label>Horário Inicial</label>' +
+            '<input type="time" class="form-control" id="txtInicial" />' +
+
+            '<label>Horário Final</label>' +
+            '<input type="time" class="form-control" id="txtFinal" />' +
+
+            '<label>Dia Semana</label >' +
+            '    <select class="form-control" id="cmbSemana">' +
+            '        <option value="" selected="selected">Dia da Semana...</option>' +
+            '        <option value="DOMINGO">DOMINGO</option>' +
+            '        <option value="SEGUNDA-FEIRA">SEGUNDA-FEIRA</option>' +
+            '        <option value="TERÇA-FEIRA">TERÇA-FEIRA</option>' +
+            '        <option value="QUARTA-FEIRA">QUARTA-FEIRA</option>' +
+            '        <option value="QUINTA-FEIRA">QUINTA-FEIRA</option>' +
+            '        <option value="SEXTA-FEIRA">SEXTA-FEIRA</option>' +
+            '        <option value="SÁBADO">SÁBADO</option>' +
+            '    </select>' +
+            '</div>'
+        );
+    });
+
+    $('#btnRemover').click(function () {
+        $('form #divHorario').last().remove();
+    });
+
+    $('#btnSalvar').click(function () {
+        if ($('form #divHorario').length == 0) {
+            $('.validation-summary-valid ul').empty().append('<li>Adicione um Horário</li>');
+            return;
+        }
+
+        var LstHorario = [], item = {}, intH = @ViewData["IdHorario"];
+
+        $('form #divHorario').each(function (i, p) {
+            item['IdEmpresa'] = @NacbarAplicacao.IntIdEmpresa.ToString();
+            item['IdHorario'] = intH;
+            item['IdCliente'] = $('#cmbCliente').find(':selected').data('value');
+            item['IdProfissional'] = $('#cmbProfissional').find(':selected').data('value').profissional;
+            item['IdProfissao'] = $('#cmbProfissional').find(':selected').data('value').profissao;
+            item['IdServico'] = $('#cmbProfissional').find(':selected').data('value').servico;
+            item['HrHorarioInicial'] = $(p).find('#txtInicial').val();
+            item['HrHorarioFinal'] = $(p).find('#txtFinal').val();
+            item['CdDiaSemana'] = $(p).find('#cmbSemana').val();
+
+            LstHorario.push(item);
+            intH = intH + 1;
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("PostHorarioAsync","Funcao")',
+            data: { LstHorario: LstHorario },
+            success: function () {
+                $('form').submit();
+            },
+            error: function (jqXHR, exception) {
+                ajaxError(jqXHR, exception);
+            },
+        });
+    });
+</script>

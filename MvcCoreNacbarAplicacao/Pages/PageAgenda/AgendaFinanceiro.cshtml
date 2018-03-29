@@ -1,0 +1,29 @@
+﻿@page
+@model AgendaFinanceiroModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "NsApp";
+}
+
+<h4>AGENDA - FINANCEIRO</h4>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <hr />
+    <div class="form-group col-md-4">
+        <label asp-for="Financeiro.NmValor" class="control-label label-form">VALOR À PAGAR R$: @Model.Financeiro.NmValor</label>
+    </div>
+    <div class="form-group col-md-4">
+        <label asp-for="Financeiro.NmValorpago" class="control-label">VALOR PAGO R$:</label>
+        <input asp-for="Financeiro.NmValorpago" type="number" min="0" step="0.01" class="form-control" id="txtValorPagar" autocomplete="off" />
+    </div>
+    <div class="form-group col-md-4">
+        <label asp-for="Financeiro.IdFormapagamento" class="control-label">FORMA PAGAMENTO:</label>
+        <select asp-for="Financeiro.IdFormapagamento" asp-items="@(new SelectList(Model.LstFormapagamento, "IdFormapagamento", "DsFormapagamento"))" class="form-control">
+            <option value="@null">Forma de Pagamento...</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary" id="btnSalvar">SALVAR</button>
+</form>
+
+<script type="text/javascript" src="~/JSFuncoes.js"></script>

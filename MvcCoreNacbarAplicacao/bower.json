@@ -1,0 +1,8 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "jquery-mask-plugin": "jQuery-Mask-Plugin#v1.14.12",
+    "moment": "2.19.1"
+  }
+}

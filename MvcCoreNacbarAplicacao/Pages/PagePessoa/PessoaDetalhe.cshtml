@@ -1,0 +1,119 @@
+﻿@page
+@model PessoaDetalheModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    if (PessoaLeituraModel.EnumPessoa == PessoaLeituraModel.enumPessoa.FISICA)
+    {
+        ViewData["Pessoa"] = "PESSOA FÍSICA";
+    }
+    else if (PessoaLeituraModel.EnumPessoa == PessoaLeituraModel.enumPessoa.JURIDICA)
+    {
+        ViewData["Pessoa"] = "PESSOA JURÍDICA";
+    }
+    ViewData["Title"] = "NsApp";
+}
+
+<h4>@ViewData["Pessoa"]</h4>
+<hr />
+<table id="tableP">
+    <tr>
+        <td>NOME PESSOA:</td>
+        <td>@Model.Pessoa.DsNomepessoa</td>
+    </tr>
+    @if (Model.Pessoa.BoTipopessoa == true)
+    {
+        <tr>
+            <td>NOME FANTASIA:</td>
+            <td>@Model.Pessoa.DsNomefantasia</td>
+        </tr>
+
+        <tr>
+            <td>CNPJ:</td>
+            <td>@Model.Pessoa.DsInscricaofederal</td>
+        </tr>
+        <tr>
+            <td>INSC. ESTADUAL</td>
+            <td>@Model.Pessoa.DsInscricaoestadual</td>
+        </tr>
+        <tr>
+            <td>INSC. MUNICIPAL:</td>
+            <td>@Model.Pessoa.DsInscricaomunicipal</td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td>CPF:</td>
+            <td>@Model.Pessoa.DsInscricaofederal</td>
+        </tr>
+        <tr>
+            <td>ESTADO CIVIL:</td>
+            <td>@Model.Pessoa.IdEstadocivilNavigation.DsEstadocivil</td>
+        </tr>
+    }
+    <tr>
+        <td>DATA NASCIMENTO:</td>
+        <td>@Model.Pessoa.DtNascimento</td>
+    </tr>
+    <tr>
+        <td>CEP:</td>
+        <td>@Model.Pessoa.DsCep</td>
+    </tr>
+    <tr>
+        <td>MUNICÍPIO:</td>
+        <td>@Model.Pessoa.IdMunicipioNavigation.DsMunicipio</td>
+    </tr>
+    <tr>
+        <td>BAIRRO:</td>
+        <td>@Model.Pessoa.IdBairroNavigation.DsBairro</td>
+    </tr>
+    <tr>
+        <td>ENDEREÇO:</td>
+        <td>@Model.Pessoa.DsLogradouro</td>
+    </tr>
+    <tr>
+        <td>COMPLEMENTO:</td>
+        <td>@Model.Pessoa.DsComplemento</td>
+    </tr>
+    <tr>
+        <td>NÚMERO:</td>
+        <td>@Model.Pessoa.DsNumero</td>
+    </tr>
+    <tr>
+        <td>EMAIL:</td>
+        <td>@Model.Pessoa.DsEmail</td>
+    </tr>
+    <tr>
+        <td>TELEFONE:</td>
+        <td>@Model.Pessoa.DsTelefone</td>
+    </tr>
+    <tr>
+        <td>CELULAR:</td>
+        <td>@Model.Pessoa.DsCelular</td>
+    </tr>
+    @if (Model.Pessoa.BoTipopessoa == false && Model.BolMenor)
+    {
+        <tr>
+            <td>NOME RESPONSÁVEL:</td>
+            <td>@Model.Pessoa.DsResponsavel</td>
+        </tr>
+        <tr>
+            <td>TELEFONE RESPONSÁVEL:</td>
+            <td>@Model.Pessoa.DsTelefoneresponsavel</td>
+        </tr>
+        <tr>
+            <td>CELULAR RESPONSÁVEL:</td>
+            <td>@Model.Pessoa.DsCelularresponsavel</td>
+        </tr>
+    }
+    <tr>
+        <td>OBSERVAÇÃO:</td>
+        <td>@Model.Pessoa.DsObservacao</td>
+    </tr>
+    <tr>
+        <td>DATA CADASTRO:</td>
+        <td>@Model.Pessoa.DsResponsavel</td>
+    </tr>
+</table>
+<br />
+<a class="btn btn-sm btn-primary" href="/PagePessoa/PessoaLeitura?enumPessoa=@PessoaLeituraModel.EnumPessoa">VOLTAR</a>

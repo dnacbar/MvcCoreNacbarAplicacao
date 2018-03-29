@@ -1,0 +1,58 @@
+﻿@page
+@model RelatorioModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@* jQUery - DataTable *@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { packages: ['corechart', 'bar'] });
+    google.charts.setOnLoadCallback(drawDualX);
+
+    function drawDualX() {
+
+        var teste = [['City', '2017 Population', '2010 Population', '2000 Population'],];
+
+        $.each(new Array(10), function (i) {
+            teste.push(['New York' + i, '10', '12', i]);
+        });
+        
+        var data = google.visualization.arrayToDataTable(teste);
+
+        var materialOptions = {
+            chart: {
+                title: 'Population of Largest U.S. Cities',
+                subtitle: 'Based on most recent and previous census data'
+            },
+            width: 900,
+            height: 350, 
+            hAxis: {
+                title: 'Total Population'
+            },
+            vAxis: {
+                title: 'City'
+            },
+            bars: 'horizontal',
+            series: {
+                0: { axis: '2010' },
+                1: { axis: '2000' },
+                2: { axis: '2017'}
+            },
+            axes: {
+                x: {
+                    2017: { label: '2017 Population (in millions)', side: 'top' },
+                    2010: { label: '2010 Population' },
+                    2000: { label: '2000 Population' }
+                }
+            }
+        };
+        
+        var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
+        materialChart.draw(data, materialOptions);
+    }
+</script>
+<h4>@ViewData["RELATÓRIO"]</h4>
+<hr />
+
+<div id="chart_div" style="width:900px; height:350px;"></div>
+
+

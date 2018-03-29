@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-MvcCoreNacbarAplicacao-7C8A73B3-FC86-4984-9590-9C9E146FE479</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="DbNacbarEF BackUp\**" />
+    <Compile Remove="Pages\HaoU\**" />
+    <Content Remove="DbNacbarEF BackUp\**" />
+    <Content Remove="Pages\HaoU\**" />
+    <EmbeddedResource Remove="DbNacbarEF BackUp\**" />
+    <EmbeddedResource Remove="Pages\HaoU\**" />
+    <None Remove="DbNacbarEF BackUp\**" />
+    <None Remove="Pages\HaoU\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Pages\PageBasico\BasicoExcluir.cshtml.cs" />
+    <Compile Remove="Pages\PageUF\UFExcluir.cshtml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Pages\PageBasico\BasicoExcluir.cshtml" />
+    <Content Remove="Pages\PageUF\UFExcluir.cshtml" />
+    <Content Remove="Pages\_ViewImports.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.8.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pages\PageBasico\BasicoCriarEditar.cshtml" />
+    <None Include="Pages\PageBasico\BasicoLeitura.cshtml" />
+    <None Include="Pages\Contact.cshtml" />
+    <None Include="Pages\Error.cshtml" />
+    <None Include="Pages\PageHorario\HorarioCriar.cshtml" />
+    <None Include="Pages\PageHorario\HorarioLeitura.cshtml" />
+    <None Include="Pages\Index.cshtml" />
+    <None Include="Pages\PageAgenda\AgendaCriar.cshtml" />
+    <None Include="Pages\PageAgenda\AgendaLeitura.cshtml" />
+    <None Include="Pages\PagePessoa\PessoaCriarEditar.cshtml" />
+    <None Include="Pages\PagePessoa\PessoaBloquear.cshtml" />
+    <None Include="Pages\PagePessoa\PessoaLeitura.cshtml" />
+    <None Include="Pages\PageUF\UFCriarEditar.cshtml" />
+    <None Include="Pages\PageUF\UFLeitura.cshtml" />
+    <None Include="Pages\_Layout.cshtml" />
+    <None Include="Pages\_LoginPartial.cshtml" />
+    <None Include="Pages\_ValidationScriptsPartial.cshtml" />
+    <None Include="Pages\_ViewStart.cshtml" />
+  </ItemGroup>
+</Project>
